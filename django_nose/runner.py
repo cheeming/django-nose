@@ -304,8 +304,11 @@ class NoseTestSuiteRunner(BasicNoseRunner):
                     reset_statements = connection.ops.sequence_reset_sql(
                             style, cache.get_models())
 
-                for reset_statement in reset_statements:
-                    cursor.execute(reset_statement)
+                try:
+                    for reset_statement in reset_statements:
+                        cursor.execute(reset_statement)
+                except:
+                    print 'WARNING: problem running reset statement: %s' % reset_statement
 
                 # Django v1.3 (https://code.djangoproject.com/ticket/9964)
                 # starts using commit_unless_managed() for individual
